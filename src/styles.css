@@ -91,12 +91,16 @@
 @layer base {
   * { border-color: var(--color-rule); }
   html, body {
-    background-color: var(--paper-deep);
+    background-color: var(--paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
   }
+  #root { min-height: 100dvh; }
   .font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; }
   .font-serif   { font-family: var(--font-serif); }
   .font-mono    { font-family: var(--font-mono); }

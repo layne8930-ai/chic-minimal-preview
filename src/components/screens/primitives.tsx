@@ -39,14 +39,14 @@ export function SectionTitle({ kicker, title }: { kicker?: string; title: string
 
 export function Tag({ children, tone = "ink" }: { children: ReactNode; tone?: "ink" | "accent" | "sage" | "muted" }) {
   const map = {
-    ink: "border-ink text-ink",
-    accent: "border-accent text-accent",
-    sage: "border-sage text-sage",
-    muted: "border-rule text-ink-soft",
+    ink: "border-ink text-ink bg-paper",
+    accent: "border-accent text-accent bg-paper",
+    sage: "border-sage text-sage bg-paper",
+    muted: "border-rule text-ink-soft bg-paper",
   };
   return (
     <span
-      className={`inline-flex items-center gap-1 border ${map[tone]} px-2 py-0.5 text-[10px] tracking-[0.15em] uppercase font-mono`}
+      className={`mp-pill inline-flex items-center gap-1 border ${map[tone]} px-2.5 py-0.5 text-[10px] tracking-[0.15em] uppercase font-mono`}
     >
       {children}
     </span>
@@ -62,7 +62,7 @@ export function PrimaryButton({
   to?: string;
   full?: boolean;
 }) {
-  const cls = `inline-flex items-center justify-center bg-ink text-paper px-6 py-3 text-sm tracking-[0.2em] uppercase ${full ? "w-full" : ""}`;
+  const cls = `mp-pill inline-flex items-center justify-center bg-ink text-paper px-6 py-3 text-sm tracking-[0.2em] uppercase ${full ? "w-full" : ""}`;
   if (to) return <Link to={to} className={cls}>{children}</Link>;
   return <button className={cls}>{children}</button>;
 }
@@ -76,7 +76,7 @@ export function GhostButton({
   to?: string;
   full?: boolean;
 }) {
-  const cls = `inline-flex items-center justify-center border border-ink text-ink px-6 py-3 text-sm tracking-[0.2em] uppercase ${full ? "w-full" : ""}`;
+  const cls = `mp-pill inline-flex items-center justify-center border border-ink text-ink px-6 py-3 text-sm tracking-[0.2em] uppercase ${full ? "w-full" : ""}`;
   if (to) return <Link to={to} className={cls}>{children}</Link>;
   return <button className={cls}>{children}</button>;
 }

@@ -1,8 +1,10 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { PhoneFrame } from "@/components/PhoneFrame";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import { MobileShell } from "@/components/MobileShell";
+import { DevLauncher } from "@/components/DevLauncher";
 import * as S from "@/components/screens";
 
-const map: Record<string, { node: React.ReactNode; label: string; tab?: "meeting" | "schedule" | "me"; hideTab?: boolean }> = {
+type Tab = "meeting" | "schedule" | "me";
+const map: Record<string, { node: React.ReactNode; label: string; tab?: Tab; hideTab?: boolean }> = {
   "01": { node: <S.P01 />, label: "会议中心", tab: "meeting" },
   "02": { node: <S.P02 />, label: "会议详情", hideTab: true },
   "03": { node: <S.P03 />, label: "登录引导", hideTab: true },
@@ -20,6 +22,11 @@ const map: Record<string, { node: React.ReactNode; label: string; tab?: "meeting
 };
 
 export const Route = createFileRoute("/p/$id")({
+  head: () => ({
+    meta: [
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+    ],
+  }),
   loader: ({ params }) => {
     if (!map[params.id]) throw notFound();
     return { id: params.id };
@@ -30,34 +37,12 @@ export const Route = createFileRoute("/p/$id")({
 function Page() {
   const { id } = Route.useLoaderData();
   const item = map[id];
-  const ids = Object.keys(map);
-  const idx = ids.indexOf(id);
-  const prev = ids[(idx - 1 + ids.length) % ids.length];
-  const next = ids[(idx + 1) % ids.length];
-
   return (
-    <div className="min-h-screen py-10 px-4 bg-paper-deep">
-      <div className="max-w-4xl mx-auto mb-6 flex items-baseline justify-between">
-        <Link to="/" className="font-mono text-[11px] tracking-widest uppercase text-ink-soft hover:text-ink">
-          ← 全部界面
-        </Link>
-        <div className="font-mono text-[11px] tracking-widest uppercase text-ink-soft">
-          P{id} / 14
-        </div>
-      </div>
-
-      <PhoneFrame code={`P${id}`} label={item.label} tab={item.tab} hideTab={item.hideTab}>
+    <>
+      <MobileShell tab={item.tab} hideTab={item.hideTab}>
         {item.node}
-      </PhoneFrame>
-
-      <div className="max-w-4xl mx-auto mt-8 flex justify-between font-mono text-[11px] tracking-widest uppercase">
-        <Link to="/p/$id" params={{ id: prev }} className="text-ink hover:text-accent">
-          ‹ P{prev}
-        </Link>
-        <Link to="/p/$id" params={{ id: next }} className="text-ink hover:text-accent">
-          P{next} ›
-        </Link>
-      </div>
-    </div>
+      </MobileShell>
+      <DevLauncher />
+    </>
   );
 }

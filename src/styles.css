@@ -5,15 +5,16 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
   --radius-2xl: 24px;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-rule: var(--rule);
@@ -29,7 +30,7 @@
   --color-secondary-foreground: var(--ink);
   --color-popover: var(--paper);
   --color-popover-foreground: var(--ink);
-  --color-destructive: oklch(0.5 0.18 25);
+  --color-destructive: oklch(0.55 0.18 25);
   --color-destructive-foreground: var(--paper);
   --color-border: var(--rule);
   --color-input: var(--rule);
@@ -37,33 +38,54 @@
   --color-sage: var(--sage);
   --color-gold: var(--gold);
 
-  --font-serif: "Cormorant Garamond", "Noto Serif SC", Georgia, serif;
-  --font-display: "Instrument Serif", "Cormorant Garamond", "Noto Serif SC", Georgia, serif;
+  --font-serif: "Source Serif 4", "Noto Serif SC", Georgia, serif;
+  --font-display: "Instrument Serif", "Source Serif 4", "Noto Serif SC", Georgia, serif;
   --font-sans: "Inter", "PingFang SC", "HarmonyOS Sans", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
+/* ============================================================
+   Single source of truth: 蓝色极简学术风 monochrome theme.
+   Reusable for both the mini-program demo and a future PC admin.
+   All component code should consume these tokens — never hex.
+   ============================================================ */
 :root {
-  --paper: oklch(0.965 0.012 80);          /* warm cream paper */
-  --paper-deep: oklch(0.94 0.018 75);
-  --ink: oklch(0.22 0.012 60);             /* deep warm black */
-  --ink-soft: oklch(0.48 0.015 60);
-  --rule: oklch(0.86 0.014 70);
-  --card: oklch(0.985 0.008 80);
-  --muted: oklch(0.92 0.012 75);
-  --accent: oklch(0.52 0.16 35);           /* terracotta */
-  --sage: oklch(0.55 0.05 140);
-  --gold: oklch(0.68 0.11 75);
+  /* paper / surface */
+  --paper:       oklch(0.985 0.005 240);   /* near-white with a hint of blue */
+  --paper-deep:  oklch(0.96  0.010 240);   /* page bg behind phone */
+  --card:        oklch(0.995 0.004 240);
+  --muted:       oklch(0.945 0.014 240);
+
+  /* ink (text) — deep academic navy */
+  --ink:         oklch(0.26  0.045 255);
+  --ink-soft:    oklch(0.55  0.030 250);
+
+  /* rules / dividers */
+  --rule:        oklch(0.90  0.018 245);
+
+  /* accent — single academic blue */
+  --accent:      oklch(0.55  0.16  255);   /* royal/oxford blue */
+  --accent-soft: oklch(0.92  0.04  255);
+
+  /* legacy slots kept as blue variants to avoid stray warm hues */
+  --sage:        oklch(0.55  0.10  240);
+  --gold:        oklch(0.62  0.13  250);
 
   --background: var(--paper);
   --foreground: var(--ink);
 }
 
-.dark { /* unused but kept */
-  --paper: oklch(0.18 0.01 60);
-  --ink: oklch(0.95 0.01 80);
-  --background: var(--paper);
-  --foreground: var(--ink);
+.dark {
+  --paper:       oklch(0.18 0.02 255);
+  --paper-deep:  oklch(0.14 0.02 255);
+  --ink:         oklch(0.96 0.01 240);
+  --ink-soft:    oklch(0.72 0.02 240);
+  --rule:        oklch(0.32 0.03 250);
+  --card:        oklch(0.22 0.02 255);
+  --muted:       oklch(0.24 0.02 255);
+  --accent:      oklch(0.72 0.15 255);
+  --background:  var(--paper);
+  --foreground:  var(--ink);
 }
 
 @layer base {
@@ -73,11 +95,42 @@
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
   }
   .font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; }
   .font-serif   { font-family: var(--font-serif); }
   .font-mono    { font-family: var(--font-mono); }
 }
+
+/* ============================================================
+   Mini-program 视觉补丁：去直角，统一圆角。
+   仅作用于 .phone-screen 容器内部 —— 不影响 PC 端复用样式。
+   ============================================================ */
+.phone-screen [class~="border"] {
+  border-radius: 14px;
+}
+.phone-screen [style*="linear-gradient"],
+.phone-screen [style*="background-image"] {
+  border-radius: 16px;
+}
+.phone-screen input,
+.phone-screen textarea,
+.phone-screen select,
+.phone-screen button {
+  border-radius: 12px;
+}
+.phone-screen .mp-pill { border-radius: 999px; }
+/* keep dividers truly flat */
+.phone-screen .border-t,
+.phone-screen .border-b,
+.phone-screen .border-l,
+.phone-screen .border-r,
+.phone-screen .border-y,
+.phone-screen .border-x,
+.phone-screen .divide-y > *,
+.phone-screen .magazine-rule { border-radius: 0 !important; }
+/* status bar notch should stay pill */
+.phone-screen .notch { border-radius: 999px !important; }
 
 @utility hairline {
   border: 1px solid var(--rule);

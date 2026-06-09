@@ -5,7 +5,7 @@ import { NavBar, SectionTitle, Tag, PrimaryButton, GhostButton } from "./primiti
 const conferences = [
   {
     id: "01",
-    cover: "linear-gradient(135deg, #2b2419 0%, #5a3b27 60%, #b5462e 100%)",
+    cover: "linear-gradient(135deg, #0b1e3a 0%, #1f3a6b 55%, #3b82f6 100%)",
     kicker: "Featured · 2026",
     title: "数字化审计与企业治理峰会",
     when: "06/15 · Sat 09:00",
@@ -15,7 +15,7 @@ const conferences = [
   },
   {
     id: "02",
-    cover: "linear-gradient(135deg, #1f2b21 0%, #3b5c44 100%)",
+    cover: "linear-gradient(135deg, #102a4c 0%, #2e5aa8 100%)",
     kicker: "Symposium",
     title: "ESG 报告与会计准则前沿",
     when: "06/22 · Sun 14:00",
@@ -25,7 +25,7 @@ const conferences = [
   },
   {
     id: "03",
-    cover: "linear-gradient(135deg, #3b2a1c 0%, #8a5a2b 100%)",
+    cover: "linear-gradient(135deg, #14305c 0%, #4a7bd1 100%)",
     kicker: "Workshop",
     title: "AI 时代的财务分析工作坊",
     when: "07/03 · Wed 19:00",
@@ -186,7 +186,7 @@ export function P02() {
             <div
               className="aspect-square w-full mb-2"
               style={{
-                background: `linear-gradient(135deg, hsl(${30 + i * 20} 25% 30%), hsl(${30 + i * 20} 30% 55%))`,
+                background: `linear-gradient(135deg, hsl(${210 + i * 8} 45% 30%), hsl(${210 + i * 8} 55% 60%))`,
               }}
             />
             <div className="font-serif text-[13px] text-ink">{n}</div>
@@ -323,7 +323,7 @@ export function P05() {
         <div className="flex items-center gap-4 mt-3">
           <div
             className="w-16 h-16 rounded-full"
-            style={{ background: "linear-gradient(135deg,#b5462e,#3b2a1c)" }}
+            style={{ background: "linear-gradient(135deg,#3b82f6,#0b1e3a)" }}
           />
           <div>
             <h1 className="font-display text-[26px] text-ink leading-tight">林知远</h1>
@@ -522,7 +522,7 @@ export function P08() {
         </div>
         <div className="p-6 flex flex-col items-center">
           <div className="w-44 h-44 bg-ink relative" style={{
-            backgroundImage: "repeating-linear-gradient(0deg,#f7f3ec 0 2px,transparent 2px 6px),repeating-linear-gradient(90deg,#f7f3ec 0 2px,transparent 2px 6px)"
+            backgroundImage: "repeating-linear-gradient(0deg,#eaf0fb 0 2px,transparent 2px 6px),repeating-linear-gradient(90deg,#eaf0fb 0 2px,transparent 2px 6px)"
           }} />
           <div className="font-mono text-[10px] tracking-widest text-ink-soft mt-4">
             SCAN AT CHECK-IN
@@ -590,10 +590,10 @@ export function P09() {
 export function P10() {
   return (
     <div>
-      <div className="px-5 pt-4 pb-6 border-b border-ink/80" style={{ background: "linear-gradient(180deg,#2b2419,#3b2a1c)" }}>
+      <div className="px-5 pt-4 pb-6 border-b border-ink/80" style={{ background: "linear-gradient(180deg,#0b1e3a,#14305c)" }}>
         <div className="font-mono text-[10px] tracking-[0.35em] uppercase text-paper/70">Volunteer · Lv.3</div>
         <div className="flex items-center gap-4 mt-3 text-paper">
-          <div className="w-16 h-16 rounded-full" style={{ background: "linear-gradient(135deg,#b5462e,#e3a07a)" }} />
+          <div className="w-16 h-16 rounded-full" style={{ background: "linear-gradient(135deg,#3b82f6,#93c5fd)" }} />
           <div>
             <h1 className="font-display text-[26px] leading-tight">林知远</h1>
             <div className="text-[11px] font-mono opacity-80 mt-1">会计学 · 服务时长 36h</div>

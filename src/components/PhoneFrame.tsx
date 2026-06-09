@@ -19,17 +19,17 @@ export function PhoneFrame({ children, label, code, hideTab, tab = "meeting" }: 
         </div>
       )}
       <div
-        className="relative rounded-[44px] bg-ink p-[10px] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)]"
+        className="relative rounded-[44px] bg-ink p-[10px] shadow-[0_30px_80px_-30px_rgba(15,30,65,0.45)]"
         style={{ width: 395 }}
       >
         <div
-          className="relative overflow-hidden rounded-[36px] bg-paper"
+          className="phone-screen relative overflow-hidden rounded-[36px] bg-paper"
           style={{ width: 375, height: 812 }}
         >
           {/* Status bar */}
           <div className="absolute top-0 left-0 right-0 h-11 flex items-center justify-between px-6 z-50 text-[12px] font-mono text-ink">
             <span>9:41</span>
-            <div className="absolute left-1/2 -translate-x-1/2 top-2 h-6 w-28 rounded-full bg-ink" />
+            <div className="notch absolute left-1/2 -translate-x-1/2 top-2 h-6 w-28 rounded-full bg-ink" />
             <span className="flex items-center gap-1">
               <span>•••</span>
               <span className="inline-block w-6 h-2.5 rounded-sm border border-ink relative">

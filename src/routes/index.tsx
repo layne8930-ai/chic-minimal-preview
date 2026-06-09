@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import * as S from "@/components/screens";
 
@@ -6,13 +7,14 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "智学会 · 小程序前端 Demo" },
-      { name: "description", content: "智学会小程序 14 个界面的杂志极简风格前端 demo" },
+      { name: "description", content: "智学会小程序 14 个界面的蓝色极简学术风前端 demo" },
     ],
   }),
   component: Index,
 });
 
-const screens: { id: string; label: string; node: React.ReactNode; tab?: "meeting" | "schedule" | "me"; hideTab?: boolean }[] = [
+type Tab = "meeting" | "schedule" | "me";
+const screens: { id: string; label: string; node: React.ReactNode; tab?: Tab; hideTab?: boolean }[] = [
   { id: "01", label: "会议中心", node: <S.P01 />, tab: "meeting" },
   { id: "02", label: "会议详情", node: <S.P02 />, hideTab: true },
   { id: "03", label: "登录引导", node: <S.P03 />, hideTab: true },
@@ -30,100 +32,140 @@ const screens: { id: string; label: string; node: React.ReactNode; tab?: "meetin
 ];
 
 function Index() {
+  const [active, setActive] = useState("01");
+  const current = screens.find((s) => s.id === active) ?? screens[0];
+
   return (
-    <div className="min-h-screen bg-paper-deep">
-      {/* Masthead */}
-      <header className="border-b border-ink">
-        <div className="max-w-7xl mx-auto px-6 py-10">
-          <div className="flex items-baseline justify-between">
-            <div className="font-mono text-[11px] tracking-[0.35em] uppercase text-ink-soft">
-              Established 2026 · 南京 · Issue Nº 01
-            </div>
-            <div className="font-mono text-[11px] tracking-[0.35em] uppercase text-ink-soft">
-              06 / 08 / 2026
-            </div>
+    <div className="min-h-screen bg-paper-deep text-ink">
+      {/* slim app bar — 单色蓝学术风，刻意低调 */}
+      <header className="border-b border-rule bg-paper">
+        <div className="max-w-[1400px] mx-auto px-8 h-16 flex items-center justify-between">
+          <div className="flex items-baseline gap-3">
+            <span className="w-2 h-2 rounded-full bg-accent inline-block" />
+            <span className="font-display text-[22px] leading-none">智学会</span>
+            <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-ink-soft">
+              Mini-Program · Frontend Demo
+            </span>
           </div>
-          <h1 className="font-display text-[88px] leading-[0.95] text-ink mt-6">
-            智学会 <em className="text-accent">Quarterly</em>
-          </h1>
-          <p className="font-serif italic text-[18px] text-ink-soft mt-4 max-w-2xl">
-            A magazine-grade reading room for the 智学会 mini-program — fourteen screens, hand-set
-            in cream paper, deep ink and a single stroke of terracotta.
-          </p>
-          <div className="mt-6 flex items-center gap-4 font-mono text-[11px] tracking-widest uppercase text-ink-soft">
-            <span className="px-2 py-1 border border-ink text-ink">14 Screens</span>
-            <span>Frontend Demo</span>
-            <span>·</span>
-            <span>WeChat Mini-Program</span>
+          <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-ink-soft">
+            14 Screens · WeChat 375×812
           </div>
         </div>
       </header>
 
-      {/* Table of contents */}
-      <section className="max-w-7xl mx-auto px-6 py-12 border-b border-rule">
-        <div className="grid md:grid-cols-[1fr_3fr] gap-10">
-          <div>
-            <div className="font-mono text-[10px] tracking-[0.35em] uppercase text-accent">Contents</div>
-            <h2 className="font-display text-[36px] text-ink mt-2 leading-tight">目录 · 14 个界面</h2>
-            <p className="font-serif italic text-[13px] text-ink-soft mt-3">
-              点击任意条目，进入手机框预览。
-            </p>
-          </div>
-          <ol className="divide-y divide-rule border-y border-rule">
-            {screens.map((s) => (
-              <li key={s.id}>
-                <Link
-                  to="/p/$id"
-                  params={{ id: s.id }}
-                  className="flex items-baseline gap-6 py-4 group hover:text-accent"
-                >
-                  <span className="font-mono text-[12px] tracking-widest text-ink-soft w-12">P{s.id}</span>
-                  <span className="font-display text-[22px] text-ink group-hover:text-accent flex-1">
-                    {s.label}
-                  </span>
-                  <span className="font-mono text-[11px] tracking-widest text-ink-soft">View →</span>
-                </Link>
-              </li>
-            ))}
+      <main className="max-w-[1400px] mx-auto px-8 py-10 grid grid-cols-1 lg:grid-cols-[280px_1fr_320px] gap-10">
+        {/* Left: 页面索引 */}
+        <aside className="order-2 lg:order-1">
+          <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-accent mb-3">Pages</div>
+          <ol className="border-t border-rule">
+            {screens.map((s) => {
+              const on = s.id === active;
+              return (
+                <li key={s.id} className="border-b border-rule">
+                  <button
+                    onClick={() => setActive(s.id)}
+                    className={`w-full flex items-baseline gap-3 py-2.5 text-left transition-colors ${
+                      on ? "text-accent" : "text-ink hover:text-accent"
+                    }`}
+                  >
+                    <span className="font-mono text-[11px] tracking-widest text-ink-soft w-9">P{s.id}</span>
+                    <span className="font-serif text-[15px] flex-1">{s.label}</span>
+                    {on && <span className="text-accent text-xs">●</span>}
+                  </button>
+                </li>
+              );
+            })}
           </ol>
-        </div>
-      </section>
+          <Link
+            to="/p/$id"
+            params={{ id: active }}
+            className="mp-pill mt-6 inline-flex items-center justify-center w-full border border-ink text-ink py-2.5 text-[11px] tracking-[0.25em] uppercase font-mono hover:bg-ink hover:text-paper transition-colors"
+          >
+            独立预览 P{active} →
+          </Link>
+        </aside>
 
-      {/* Spread */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
-        <div className="flex items-baseline justify-between mb-10">
-          <div>
-            <div className="font-mono text-[10px] tracking-[0.35em] uppercase text-accent">The Spread</div>
-            <h2 className="font-display text-[36px] text-ink leading-tight mt-2">十四帧 · 同台呈现</h2>
+        {/* Center: 小程序前端直出 */}
+        <section className="order-1 lg:order-2 flex flex-col items-center">
+          <div className="mb-5 text-center">
+            <div className="font-mono text-[10px] tracking-[0.35em] uppercase text-ink-soft">
+              Page {active} / 14
+            </div>
+            <h1 className="font-display text-[32px] leading-tight mt-1">{current.label}</h1>
           </div>
-          <div className="font-mono text-[11px] tracking-widest uppercase text-ink-soft hidden md:block">
-            All screens · 375 × 812
+
+          <PhoneFrame tab={current.tab} hideTab={current.hideTab}>
+            {current.node}
+          </PhoneFrame>
+
+          <div className="mt-6 flex items-center gap-3 font-mono text-[10px] tracking-[0.25em] uppercase">
+            <button
+              onClick={() => {
+                const i = screens.findIndex((s) => s.id === active);
+                setActive(screens[(i - 1 + screens.length) % screens.length].id);
+              }}
+              className="mp-pill border border-ink px-4 py-2 hover:bg-ink hover:text-paper transition-colors"
+            >
+              ‹ Prev
+            </button>
+            <span className="text-ink-soft">P{active}</span>
+            <button
+              onClick={() => {
+                const i = screens.findIndex((s) => s.id === active);
+                setActive(screens[(i + 1) % screens.length].id);
+              }}
+              className="mp-pill border border-ink px-4 py-2 hover:bg-ink hover:text-paper transition-colors"
+            >
+              Next ›
+            </button>
           </div>
-        </div>
+        </section>
 
-        <div
-          className="grid gap-10 justify-items-center"
-          style={{ gridTemplateColumns: "repeat(auto-fit,minmax(395px,1fr))" }}
-        >
-          {screens.map((s) => (
-            <Link key={s.id} to="/p/$id" params={{ id: s.id }} className="block">
-              <PhoneFrame
-                code={`P${s.id}`}
-                label={s.label}
-                tab={s.tab}
-                hideTab={s.hideTab}
-              >
-                {s.node}
-              </PhoneFrame>
-            </Link>
-          ))}
-        </div>
-      </section>
+        {/* Right: 主题说明 */}
+        <aside className="order-3 hidden lg:block">
+          <div className="border border-rule rounded-2xl bg-paper p-6">
+            <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-accent">Theme</div>
+            <h3 className="font-display text-[22px] leading-tight mt-1">蓝色极简学术风</h3>
+            <p className="font-serif text-[13px] text-ink-soft leading-6 mt-3">
+              单一品牌色构建的学术杂志体系。Paper、Ink、Rule、Accent
+              四档语义令牌驱动全部界面，可直接复用至 PC 管理端。
+            </p>
 
-      <footer className="border-t border-ink mt-10">
-        <div className="max-w-7xl mx-auto px-6 py-8 flex justify-between font-mono text-[10px] tracking-[0.3em] uppercase text-ink-soft">
-          <span>智学会 · 前端 Demo</span>
-          <span>Set in Instrument Serif & Inter</span>
+            <div className="mt-5 space-y-3">
+              {[
+                ["--paper", "var(--paper)"],
+                ["--paper-deep", "var(--paper-deep)"],
+                ["--rule", "var(--rule)"],
+                ["--ink-soft", "var(--ink-soft)"],
+                ["--ink", "var(--ink)"],
+                ["--accent", "var(--accent)"],
+              ].map(([name, val]) => (
+                <div key={name} className="flex items-center gap-3">
+                  <span
+                    className="w-8 h-8 rounded-lg border border-rule"
+                    style={{ background: val }}
+                  />
+                  <span className="font-mono text-[11px] text-ink">{name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 border border-rule rounded-2xl bg-paper p-6">
+            <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-accent">Stack</div>
+            <ul className="mt-3 space-y-2 font-mono text-[11px] text-ink-soft">
+              <li>· 14 个完整小程序界面</li>
+              <li>· 单色蓝学术语义令牌</li>
+              <li>· 圆角统一 12 / 14 / 16px</li>
+              <li>· 可直接迁移至 PC 管理端</li>
+            </ul>
+          </div>
+        </aside>
+      </main>
+
+      <footer className="border-t border-rule mt-10">
+        <div className="max-w-[1400px] mx-auto px-8 py-6 flex justify-between font-mono text-[10px] tracking-[0.3em] uppercase text-ink-soft">
+          <span>智学会 · 小程序前端 Demo</span>
           <span>© 2026 NUFE</span>
         </div>
       </footer>
